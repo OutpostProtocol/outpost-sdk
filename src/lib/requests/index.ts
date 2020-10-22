@@ -1,2 +1,8 @@
 export { default as getPosts } from './getPosts';
 export type { getPostsParams, getPostsResult } from './getPosts';
+
+export { default as getSignInToken } from './getSignInToken';
+export type {
+  getSignInTokenParams,
+  getSignInTokenResult,
+} from './getSignInToken';

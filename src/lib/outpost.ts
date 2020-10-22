@@ -1,7 +1,13 @@
 import axios, { AxiosInstance } from 'axios';
 import deepmerge from 'deepmerge';
 
-import { getPosts, getPostsParams } from './requests';
+import {
+  getPosts,
+  getPostsParams,
+  getSignInToken,
+  getSignInTokenParams,
+  getSignInTokenResult,
+} from './requests';
 import type { getPostsResult } from './requests';
 
 export type createClientParams = {
@@ -10,6 +16,9 @@ export type createClientParams = {
 
 export type createClientResult = {
   readonly getPosts: (params: getPostsParams) => Promise<getPostsResult>;
+  readonly getSignInToken: (
+    params: getSignInTokenParams
+  ) => Promise<getSignInTokenResult>;
 };
 
 export const defaultOptions = Object.freeze({
@@ -24,5 +33,7 @@ export const createClient = (
   const client = axios.create({ baseURL }) as AxiosInstance;
   return {
     getPosts: (params: getPostsParams) => getPosts(client, params),
+    getSignInToken: (params: getSignInTokenParams) =>
+      getSignInToken(client, params),
   };
 };
