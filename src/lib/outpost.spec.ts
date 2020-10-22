@@ -9,7 +9,7 @@ test('createClient', (t) => {
 });
 
 test('getPosts', async (t) => {
-  const { getPosts } = createClient();
+  const { getPosts } = createClient({ baseURL: 'http://localhost:4000' });
   t.true(typeof getPosts === 'function');
   const posts = await getPosts({ slug: 'jamm' });
   t.true(Array.isArray(posts));
