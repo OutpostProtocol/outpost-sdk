@@ -23,5 +23,21 @@ test('getSignInToken', async (t) => {
   t.true(typeof getSignInToken === 'function');
   const signInToken = await getSignInToken({ address });
   t.true(typeof signInToken === 'string');
-  console.log({ signInToken });
+  t.true(!!signInToken.length);
+});
+
+test('getAuthToken', async (t) => {
+  const wallet = ethers.Wallet.createRandom();
+  const { address } = wallet;
+  const { getSignInToken, getAuthToken } = createClient({
+    baseURL: 'http://localhost:4000',
+  });
+  const signInToken = await getSignInToken({ address });
+  const signature = await wallet.signMessage(signInToken);
+  const authToken = await getAuthToken({
+    address,
+    signature,
+  });
+  t.true(typeof authToken === 'string');
+  t.true(!!authToken.length);
 });

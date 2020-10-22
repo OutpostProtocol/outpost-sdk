@@ -6,3 +6,6 @@ export type {
   getSignInTokenParams,
   getSignInTokenResult,
 } from './getSignInToken';
+
+export { default as getAuthToken } from './getAuthToken';
+export type { getAuthTokenParams, getAuthTokenResult } from './getAuthToken';
