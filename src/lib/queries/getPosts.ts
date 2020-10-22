@@ -9,11 +9,32 @@ export type getPostsParams = {
   readonly slug: string;
 };
 
-export type getPostsResult = AxiosResponse;
-
 export const getPostsSchema = yup.object().shape({
   slug: yup.string().required(),
 });
+
+export type Community = {
+  readonly name: string;
+  readonly readRequirement: number;
+  readonly tokenSymbol: string;
+};
+
+export type Post = {
+  readonly id: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly timestamp: number;
+  readonly txId: string;
+  readonly featuredImg: string;
+};
+
+export type AxiosPostsResponse = {
+  readonly data: {
+    readonly posts: getPostsResult;
+  };
+};
+
+export type getPostsResult = readonly Post[];
 
 export default async function getPosts(
   client: AxiosInstance,
@@ -21,13 +42,17 @@ export default async function getPosts(
 ): Promise<getPostsResult> {
   await getPostsSchema.validate(params);
   const { slug } = params;
-  // TODO: Implement formatting of response.
-  return client({
+  const {
+    data: {
+      data: { posts },
+    },
+  } = (await client({
     method: 'post',
     data: {
       operationName: 'posts',
       variables: { slug },
       query,
     },
-  });
+  })) as AxiosResponse<AxiosPostsResponse>;
+  return posts;
 }
