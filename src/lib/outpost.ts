@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import deepmerge from 'deepmerge';
 
-import { getPosts, getPostsParams } from './queries';
-import type { getPostsResult } from './queries';
+import { getPosts, getPostsParams } from './requests';
+import type { getPostsResult } from './requests';
 
 export type createClientParams = {
   readonly baseURL: string;

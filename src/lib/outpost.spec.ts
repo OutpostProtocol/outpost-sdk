@@ -11,7 +11,6 @@ test('createClient', (t) => {
 test('getPosts', async (t) => {
   const { getPosts } = createClient();
   t.true(typeof getPosts === 'function');
-  // fetch jamm posts
   const posts = await getPosts({ slug: 'jamm' });
   t.true(Array.isArray(posts));
 });
