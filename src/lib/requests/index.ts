@@ -18,3 +18,6 @@ export type {
 
 export { default as uploadImage } from './uploadImage';
 export type { uploadImageParams, uploadImageResult } from './uploadImage';
+
+export { default as uploadPost } from './uploadPost';
+export type { uploadPostParams, uploadPostResult } from './uploadPost';

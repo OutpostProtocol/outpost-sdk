@@ -67,34 +67,34 @@ test('getAuthToken', async (t) => {
   t.true(!!authToken.length);
 });
 
-test('getPostPreview', async (t) => {
-  const { getPosts } = createClient({
-    baseURL: 'http://localhost:4000',
-  });
-  const [...posts] = await getPosts({ slug: 'unit_tests' });
-  t.true(Array.isArray(posts));
-  t.true(!!posts.length);
-
-  posts.forEach((post) => {
-    const { id, title, subtitle, timestamp, txId, featuredImg } = post;
-    t.true(typeof id === 'string');
-    t.true(typeof title === 'string');
-    t.true(typeof subtitle === 'string');
-    t.true(typeof timestamp === 'number');
-    t.true(typeof txId === 'string');
-    t.true(typeof featuredImg === 'string' || featuredImg === null);
-  });
-
-  // const [post] = posts;
-  // const { txId } = post;
-  // TODO: @Sam: Why comslug for this call?
-  // .           This doesn't appear to work. Not sure why!
-  //const postPreview = await getPostPreview({
-  //  txId,
-  //  slug: 'unit_tests',
-  //});
-  //console.log({ postPreview });
-});
+//test('getPostPreview', async (t) => {
+//  const { getPosts, getPostPreview } = createClient({
+//    baseURL: 'http://localhost:4000',
+//  });
+//  const [...posts] = await getPosts({ slug: 'unit_tests' });
+//  t.true(Array.isArray(posts));
+//  t.true(!!posts.length);
+//
+//  posts.forEach((post) => {
+//    const { id, title, subtitle, timestamp, txId, featuredImg } = post;
+//    t.true(typeof id === 'string');
+//    t.true(typeof title === 'string');
+//    t.true(typeof subtitle === 'string');
+//    t.true(typeof timestamp === 'number');
+//    t.true(typeof txId === 'string');
+//    t.true(typeof featuredImg === 'string' || featuredImg === null);
+//  });
+//
+//  const [post] = posts;
+//  const { txId } = post;
+//  // TODO: @Sam: Why comslug for this call?
+//  //             This doesn't appear to work. Not sure why!
+//  const postPreview = await getPostPreview({
+//    txId,
+//    slug: 'unit_tests:development',
+//  });
+//  console.log({ postPreview });
+//});
 
 // TODO: This should be uploadUserImage.
 test('uploadImage', async (t) => {
@@ -113,6 +113,55 @@ test('uploadImage', async (t) => {
   t.true(!!txId.length);
   // TODO: Think we'd need a way to monitor the upload status.
   // TODO: Return this to the caller.
-  const imageUrl = `https://arweave.net/${txId}`;
-  console.log({ imageUrl });
+  //const imageUrl = `https://arweave.net/${txId}`;
+});
+
+test('uploadPost', async (t) => {
+  const { address } = wallet;
+  const { getSignInToken, getAuthToken, uploadPost } = createClient({
+    baseURL: 'http://localhost:4000',
+  });
+  const signInToken = await getSignInToken({ address });
+  const signature = await wallet.signMessage(signInToken);
+  const authToken = await getAuthToken({
+    address,
+    signature,
+  });
+  // TODO: Need a way to list communities
+  const communityTxId = 'unit_tests:development';
+  const timestamp = 1000;
+  const result = await uploadPost({
+    authToken,
+    communityTxId,
+    postUpload: {
+      title: `Automated Testing Post ${timestamp}`,
+      subtitle: 'This is an automatic post. Nothing to see here!',
+      // TODO: try <script>alert('hi')</script>
+      postText: '<i>Hello, world.</i>',
+      // TODO: What is this?
+      canonicalLink: '',
+      timestamp,
+    },
+  });
+  t.true(!!result);
+  t.true(typeof result === 'object');
+  const {
+    txId,
+    title,
+    postText,
+    subtitle,
+    canonicalLink,
+    community,
+    user,
+  } = result;
+  t.true(typeof txId === 'string');
+  t.true(typeof title === 'string');
+  t.true(typeof postText === 'string');
+  t.true(typeof subtitle === 'string');
+  t.true(typeof canonicalLink === 'string');
+  t.true(!!community);
+  t.true(typeof community === 'object');
+  t.true(typeof user === 'object');
+  const { name } = community;
+  t.true(typeof name === 'string');
 });

@@ -16,6 +16,9 @@ import {
   uploadImage,
   uploadImageParams,
   uploadImageResult,
+  uploadPost,
+  uploadPostParams,
+  uploadPostResult,
 } from './requests';
 import type { getPostsResult } from './requests';
 
@@ -37,6 +40,7 @@ export type createClientResult = {
   readonly uploadImage: (
     params: uploadImageParams
   ) => Promise<uploadImageResult>;
+  readonly uploadPost: (params: uploadPostParams) => Promise<uploadPostResult>;
 };
 
 export const defaultOptions = Object.freeze({
@@ -57,5 +61,6 @@ export const createClient = (
     getPostPreview: (params: getPostPreviewParams) =>
       getPostPreview(client, params),
     uploadImage: (params: uploadImageParams) => uploadImage(client, params),
+    uploadPost: (params: uploadPostParams) => uploadPost(client, params),
   };
 };
