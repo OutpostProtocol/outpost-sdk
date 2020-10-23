@@ -6,7 +6,7 @@ import { mutations } from '../graphql';
 const { uploadImage: query } = mutations;
 
 export type uploadImageParams = {
-  readonly image: unknown;
+  readonly base64: string;
   readonly address: string;
 };
 
@@ -17,7 +17,7 @@ export type AxiosUploadImageResponse = {
 };
 
 const uploadImageSchema = yup.object().shape({
-  image: yup.mixed(),
+  base64: yup.string().required(),
   address: yup.string().required(),
 });
 
@@ -26,7 +26,7 @@ export default async function uploadImage(
   params: uploadImageParams
 ): Promise<AxiosUploadImageResponse> {
   await uploadImageSchema.validate(params);
-  const { image, address } = params;
+  const { base64: image, address } = params;
   const { data } = (await client({
     method: 'post',
     data: {
