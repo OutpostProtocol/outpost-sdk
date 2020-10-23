@@ -2,6 +2,8 @@ import axios, { AxiosInstance } from 'axios';
 import deepmerge from 'deepmerge';
 
 import {
+  Community,
+  getAllCommunities,
   getAuthToken,
   getAuthTokenParams,
   getAuthTokenResult,
@@ -27,6 +29,7 @@ export type createClientParams = {
 };
 
 export type createClientResult = {
+  readonly getAllCommunities: () => Promise<readonly Community[]>;
   readonly getPosts: (params: getPostsParams) => Promise<getPostsResult>;
   readonly getSignInToken: (
     params: getSignInTokenParams
@@ -54,6 +57,7 @@ export const createClient = (
   const { baseURL } = deepmerge(defaultOptions, options);
   const client = axios.create({ baseURL }) as AxiosInstance;
   return {
+    getAllCommunities: () => getAllCommunities(client),
     getPosts: (params: getPostsParams) => getPosts(client, params),
     getSignInToken: (params: getSignInTokenParams) =>
       getSignInToken(client, params),

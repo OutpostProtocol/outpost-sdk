@@ -67,34 +67,39 @@ test('getAuthToken', async (t) => {
   t.true(!!authToken.length);
 });
 
-//test('getPostPreview', async (t) => {
-//  const { getPosts, getPostPreview } = createClient({
-//    baseURL: 'http://localhost:4000',
-//  });
-//  const [...posts] = await getPosts({ slug: 'unit_tests' });
-//  t.true(Array.isArray(posts));
-//  t.true(!!posts.length);
-//
-//  posts.forEach((post) => {
-//    const { id, title, subtitle, timestamp, txId, featuredImg } = post;
-//    t.true(typeof id === 'string');
-//    t.true(typeof title === 'string');
-//    t.true(typeof subtitle === 'string');
-//    t.true(typeof timestamp === 'number');
-//    t.true(typeof txId === 'string');
-//    t.true(typeof featuredImg === 'string' || featuredImg === null);
-//  });
-//
-//  const [post] = posts;
-//  const { txId } = post;
-//  // TODO: @Sam: Why comslug for this call?
-//  //             This doesn't appear to work. Not sure why!
-//  const postPreview = await getPostPreview({
-//    txId,
-//    slug: 'unit_tests:development',
-//  });
-//  console.log({ postPreview });
-//});
+// TODO: Unknown operation named "postpage".
+// test('getPostPreview', async (t) => {
+//   const { getPosts, getPostPreview } = createClient({
+//     baseURL: 'http://localhost:4000',
+//   });
+//   const [...posts] = await getPosts({ slug: 'unit_tests' });
+//   t.true(Array.isArray(posts));
+//   t.true(!!posts.length);
+
+//   posts.forEach((post) => {
+//     const { id, title, subtitle, timestamp, txId, featuredImg } = post;
+//     t.true(typeof id === 'string');
+//     t.true(typeof title === 'string');
+//     t.true(typeof subtitle === 'string');
+//     t.true(typeof timestamp === 'number');
+//     t.true(typeof txId === 'string');
+//     t.true(typeof featuredImg === 'string' || featuredImg === null);
+//   });
+
+//   const [post] = posts;
+//   const { txId } = post;
+//   try {
+//     // TODO: @Sam: Why comslug for this call?
+//     //             This doesn't appear to work. Not sure why!
+//     const postPreview = await getPostPreview({
+//       txId,
+//       slug: 'unit_tests:development',
+//     });
+//     console.log({ postPreview });
+//   } catch (e) {
+//     console.log(e.response.data);
+//   }
+// });
 
 // TODO: This should be uploadUserImage.
 test('uploadImage', async (t) => {
@@ -134,10 +139,9 @@ test('uploadPost', async (t) => {
     authToken,
     communityTxId,
     postUpload: {
-      title: `Automated Testing Post ${timestamp}`,
+      title: `Evil Automated Testing Post ${timestamp}`,
       subtitle: 'This is an automatic post. Nothing to see here!',
-      // TODO: try <script>alert('hi')</script>
-      postText: '<i>Hello, world.</i>',
+      postText: "<i>Hello, world.</i><script>alert('hi')</script>",
       // TODO: What is this?
       canonicalLink: '',
       timestamp,
@@ -164,4 +168,21 @@ test('uploadPost', async (t) => {
   t.true(typeof user === 'object');
   const { name } = community;
   t.true(typeof name === 'string');
+});
+
+test('getAllCommunities', async (t) => {
+  const { getAllCommunities } = createClient({
+    baseURL: 'http://localhost:4000',
+  });
+  const result = await getAllCommunities();
+  t.true(Array.isArray(result));
+  t.true(!!result.length);
+  result.forEach(({ id, name, txId, description, imageTxId, slug }) => {
+    t.true(typeof id === 'string');
+    t.true(typeof name === 'string');
+    t.true(typeof txId === 'string');
+    t.true(typeof description === 'string');
+    t.true(typeof imageTxId === 'string');
+    t.true(typeof slug === 'string');
+  });
 });

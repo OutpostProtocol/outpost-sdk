@@ -21,3 +21,6 @@ export type { uploadImageParams, uploadImageResult } from './uploadImage';
 
 export { default as uploadPost } from './uploadPost';
 export type { uploadPostParams, uploadPostResult } from './uploadPost';
+
+export { default as getAllCommunities } from './getAllCommunities';
+export type { Community } from './getAllCommunities';
