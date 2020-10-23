@@ -6,28 +6,43 @@ import { mutations } from '../graphql';
 const { uploadImage: query } = mutations;
 
 export type uploadImageParams = {
-  readonly base64: string;
+  readonly image: {
+    readonly data: string;
+    readonly mimeType: string;
+  };
   readonly address: string;
 };
 
-export type uploadImageResult = unknown;
+export type uploadImageResult = { readonly txId: string };
 
 export type AxiosUploadImageResponse = {
-  readonly data: uploadImageResult;
+  readonly data: {
+    readonly uploadImage: uploadImageResult;
+  };
 };
 
 const uploadImageSchema = yup.object().shape({
-  base64: yup.string().required(),
+  image: yup
+    .object()
+    .shape({
+      data: yup.string().required(),
+      mimeType: yup.string().required(),
+    })
+    .required(),
   address: yup.string().required(),
 });
 
 export default async function uploadImage(
   client: AxiosInstance,
   params: uploadImageParams
-): Promise<AxiosUploadImageResponse> {
+): Promise<uploadImageResult> {
   await uploadImageSchema.validate(params);
-  const { base64: image, address } = params;
-  const { data } = (await client({
+  const { image, address } = params;
+  const {
+    data: {
+      data: { uploadImage },
+    },
+  } = (await client({
     method: 'post',
     data: {
       operationName: 'uploadImage',
@@ -35,5 +50,5 @@ export default async function uploadImage(
       variables: { image, address },
     },
   })) as AxiosResponse<AxiosUploadImageResponse>;
-  return data;
+  return uploadImage;
 }
