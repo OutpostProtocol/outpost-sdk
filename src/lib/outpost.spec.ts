@@ -46,7 +46,7 @@ test('getPostPreview', async (t) => {
   const { getPosts, getPostPreview } = createClient({
     baseURL: 'http://localhost:4000',
   });
-  const [...posts] = await getPosts({ slug: 'outpost' });
+  const [...posts] = await getPosts({ slug: 'unit_tests' });
   t.true(Array.isArray(posts));
   t.true(!!posts.length);
 
@@ -65,7 +65,7 @@ test('getPostPreview', async (t) => {
   // TODO: @Sam: Why comslug for this call?
   const postPreview = await getPostPreview({
     txId,
-    slug: 'development',
+    slug: 'unit_tests',
   });
   console.log({ postPreview });
 });
