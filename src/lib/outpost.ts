@@ -5,6 +5,9 @@ import {
   getAuthToken,
   getAuthTokenParams,
   getAuthTokenResult,
+  getPostPreview,
+  getPostPreviewParams,
+  getPostPreviewResult,
   getPosts,
   getPostsParams,
   getSignInToken,
@@ -25,6 +28,9 @@ export type createClientResult = {
   readonly getAuthToken: (
     params: getAuthTokenParams
   ) => Promise<getAuthTokenResult>;
+  readonly getPostPreview: (
+    params: getPostPreviewParams
+  ) => Promise<getPostPreviewResult>;
 };
 
 export const defaultOptions = Object.freeze({
@@ -42,5 +48,7 @@ export const createClient = (
     getSignInToken: (params: getSignInTokenParams) =>
       getSignInToken(client, params),
     getAuthToken: (params: getAuthTokenParams) => getAuthToken(client, params),
+    getPostPreview: (params: getPostPreviewParams) =>
+      getPostPreview(client, params),
   };
 };

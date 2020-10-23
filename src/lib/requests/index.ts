@@ -9,3 +9,9 @@ export type {
 
 export { default as getAuthToken } from './getAuthToken';
 export type { getAuthTokenParams, getAuthTokenResult } from './getAuthToken';
+
+export { default as getPostPreview } from './getPostPreview';
+export type {
+  getPostPreviewParams,
+  getPostPreviewResult,
+} from './getPostPreview';

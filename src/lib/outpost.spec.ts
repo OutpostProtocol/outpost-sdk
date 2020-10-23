@@ -12,7 +12,7 @@ test('createClient', (t) => {
 test('getPosts', async (t) => {
   const { getPosts } = createClient({ baseURL: 'http://localhost:4000' });
   t.true(typeof getPosts === 'function');
-  const posts = await getPosts({ slug: 'jamm' });
+  const posts = await getPosts({ slug: 'outpost' });
   t.true(Array.isArray(posts));
 });
 
@@ -40,4 +40,27 @@ test('getAuthToken', async (t) => {
   });
   t.true(typeof authToken === 'string');
   t.true(!!authToken.length);
+});
+
+test('getPostPreview', async (t) => {
+  const { getPosts } = createClient({
+    baseURL: 'http://localhost:4000',
+  });
+  const [...posts] = await getPosts({ slug: 'outpost' });
+  t.true(Array.isArray(posts));
+  t.true(!!posts.length);
+
+  posts.forEach((post) => {
+    const { id, title, subtitle, timestamp, txId, featuredImg } = post;
+    t.true(typeof id === 'string');
+    t.true(typeof title === 'string');
+    t.true(typeof subtitle === 'string');
+    t.true(typeof timestamp === 'number');
+    t.true(typeof txId === 'string');
+    t.true(typeof featuredImg === 'string');
+  });
+
+  // TODO: @Sam: Is getPostPreview deprecated?
+  // const postPreview = await getPostPreview({ txId, slug: 'outpost' });
+  // console.log({ postPreview });
 });
