@@ -43,7 +43,7 @@ test('getAuthToken', async (t) => {
 });
 
 test('getPostPreview', async (t) => {
-  const { getPosts } = createClient({
+  const { getPosts, getPostPreview } = createClient({
     baseURL: 'http://localhost:4000',
   });
   const [...posts] = await getPosts({ slug: 'outpost' });
@@ -60,7 +60,18 @@ test('getPostPreview', async (t) => {
     t.true(typeof featuredImg === 'string');
   });
 
-  // TODO: @Sam: Is getPostPreview deprecated?
-  // const postPreview = await getPostPreview({ txId, slug: 'outpost' });
-  // console.log({ postPreview });
+  const [post] = posts;
+  const { txId } = post;
+  // TODO: @Sam: Why comslug for this call?
+  const postPreview = await getPostPreview({
+    txId,
+    slug: 'development',
+  });
+  console.log({ postPreview });
 });
+
+//test('uploadImage', async (t) => {
+//  const { uploadImage } = createClient({
+//    baseURL: 'http://localhost:4000',
+//  });
+//});

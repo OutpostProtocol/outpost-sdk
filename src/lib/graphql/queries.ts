@@ -148,3 +148,23 @@ export const getUserRoles = `
     }
   }
 `;
+
+export const getCommunityPage = `
+  query ComPage($slug: String) {
+      community(slug: $slug) {
+        id
+        name
+        txId
+        tokenAddress
+        tokenSymbol
+        description
+        imageTxId
+        readRequirement
+        owner {
+          name
+          image
+        }
+        showOwner
+      }
+    }
+`;

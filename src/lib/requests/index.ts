@@ -15,3 +15,6 @@ export type {
   getPostPreviewParams,
   getPostPreviewResult,
 } from './getPostPreview';
+
+export { default as uploadImage } from './uploadImage';
+export type { uploadImageParams, uploadImageResult } from './uploadImage';
