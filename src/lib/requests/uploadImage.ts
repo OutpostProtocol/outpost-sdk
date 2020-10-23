@@ -1,15 +1,13 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import * as yup from 'yup';
 
+import { ImageMimeTypes, splitBase64String } from '../constants';
 import { mutations } from '../graphql';
 
 const { uploadImage: query } = mutations;
 
 export type uploadImageParams = {
-  readonly image: {
-    readonly data: string;
-    readonly mimeType: string;
-  };
+  readonly base64: string;
   readonly address: string;
 };
 
@@ -22,13 +20,7 @@ export type AxiosUploadImageResponse = {
 };
 
 const uploadImageSchema = yup.object().shape({
-  image: yup
-    .object()
-    .shape({
-      data: yup.string().required(),
-      mimeType: yup.string().required(),
-    })
-    .required(),
+  base64: yup.string().required(),
   address: yup.string().required(),
 });
 
@@ -37,7 +29,17 @@ export default async function uploadImage(
   params: uploadImageParams
 ): Promise<uploadImageResult> {
   await uploadImageSchema.validate(params);
-  const { image, address } = params;
+  const { base64, address } = params;
+  const maybeSplitBase64 = splitBase64String(base64);
+  if (!maybeSplitBase64) {
+    return Promise.reject(new Error('Malformed base64 string.'));
+  }
+  const { data, mimeType } = maybeSplitBase64;
+  if (ImageMimeTypes.indexOf(mimeType) < 0) {
+    return Promise.reject(
+      new Error(`${mimeType} is not a supported image upload type.`)
+    );
+  }
   const {
     data: {
       data: { uploadImage },
@@ -47,7 +49,7 @@ export default async function uploadImage(
     data: {
       operationName: 'uploadImage',
       query,
-      variables: { image, address },
+      variables: { image: { data, mimeType }, address },
     },
   })) as AxiosResponse<AxiosUploadImageResponse>;
   return uploadImage;
