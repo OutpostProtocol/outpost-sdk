@@ -10,10 +10,20 @@ export type getPostPreviewParams = {
   readonly slug: string;
 };
 
-export type getPostPreviewResult = unknown;
+export type getPostPreviewResult = {
+  readonly id: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly timestamp: number;
+  readonly txId: string;
+  readonly featuredImg: string | null;
+  readonly canonicalLink: string;
+};
 
 export type AxiosGetPostPreviewResponse = {
-  readonly data: getPostPreviewResult;
+  readonly data: {
+    readonly postPreview: getPostPreviewResult;
+  };
 };
 
 const getPostPreviewSchema = yup.object().shape({
@@ -27,13 +37,16 @@ export default async function getPostPreview(
 ): Promise<getPostPreviewResult> {
   await getPostPreviewSchema.validate(params);
   const { txId, slug } = params;
-  const { data } = (await client({
+  const {
+    data: {
+      data: { postPreview },
+    },
+  } = (await client({
     method: 'post',
     data: {
-      operationName: 'postpage',
       query,
       variables: { txId, slug },
     },
   })) as AxiosResponse<AxiosGetPostPreviewResponse>;
-  return data;
+  return postPreview;
 }

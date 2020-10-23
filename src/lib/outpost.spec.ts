@@ -68,38 +68,47 @@ test('getAuthToken', async (t) => {
 });
 
 // TODO: Unknown operation named "postpage".
-// test('getPostPreview', async (t) => {
-//   const { getPosts, getPostPreview } = createClient({
-//     baseURL: 'http://localhost:4000',
-//   });
-//   const [...posts] = await getPosts({ slug: 'unit_tests' });
-//   t.true(Array.isArray(posts));
-//   t.true(!!posts.length);
+test('getPostPreview', async (t) => {
+  const { getPosts, getPostPreview } = createClient({
+    baseURL: 'http://localhost:4000',
+  });
+  const [...posts] = await getPosts({ slug: 'unit_tests' });
+  t.true(Array.isArray(posts));
+  t.true(!!posts.length);
 
-//   posts.forEach((post) => {
-//     const { id, title, subtitle, timestamp, txId, featuredImg } = post;
-//     t.true(typeof id === 'string');
-//     t.true(typeof title === 'string');
-//     t.true(typeof subtitle === 'string');
-//     t.true(typeof timestamp === 'number');
-//     t.true(typeof txId === 'string');
-//     t.true(typeof featuredImg === 'string' || featuredImg === null);
-//   });
+  posts.forEach((post) => {
+    const { id, title, subtitle, timestamp, txId, featuredImg } = post;
+    t.true(typeof id === 'string');
+    t.true(typeof title === 'string');
+    t.true(typeof subtitle === 'string');
+    t.true(typeof timestamp === 'number');
+    t.true(typeof txId === 'string');
+    t.true(typeof featuredImg === 'string' || featuredImg === null);
+  });
 
-//   const [post] = posts;
-//   const { txId } = post;
-//   try {
-//     // TODO: @Sam: Why comslug for this call?
-//     //             This doesn't appear to work. Not sure why!
-//     const postPreview = await getPostPreview({
-//       txId,
-//       slug: 'unit_tests:development',
-//     });
-//     console.log({ postPreview });
-//   } catch (e) {
-//     console.log(e.response.data);
-//   }
-// });
+  const [post] = posts;
+  const { txId } = post;
+
+  // TODO: @Sam: Why comslug for this call?
+  const postPreview = await getPostPreview({
+    txId,
+    slug: 'unit_tests:development',
+  });
+  const {
+    id,
+    title,
+    subtitle,
+    timestamp,
+    txId: previewTxId,
+    canonicalLink,
+  } = postPreview;
+  t.true(typeof id === 'string');
+  t.true(typeof title === 'string');
+  t.true(typeof subtitle === 'string');
+  t.true(typeof timestamp === 'number');
+  t.true(typeof previewTxId === 'string');
+  t.true(typeof canonicalLink === 'string');
+});
 
 // TODO: This should be uploadUserImage.
 test('uploadImage', async (t) => {
