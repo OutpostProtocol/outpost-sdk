@@ -7,9 +7,12 @@ import {
   getAuthToken,
   getAuthTokenParams,
   getAuthTokenResult,
+  getPost,
+  getPostParams,
   getPostPreview,
   getPostPreviewParams,
   getPostPreviewResult,
+  getPostResult,
   getPosts,
   getPostsParams,
   getSignInToken,
@@ -50,6 +53,7 @@ export type createClientResult = {
   readonly uploadComment: (
     params: uploadCommentParams
   ) => Promise<uploadCommentResult>;
+  readonly getPost: (params: getPostParams) => Promise<getPostResult>;
 };
 
 export const defaultOptions = Object.freeze({
@@ -74,5 +78,6 @@ export const createClient = (
     uploadPost: (params: uploadPostParams) => uploadPost(client, params),
     uploadComment: (params: uploadCommentParams) =>
       uploadComment(client, params),
+    getPost: (params: getPostParams) => getPost(client, params),
   };
 };

@@ -30,20 +30,20 @@ const wallet = ethers.Wallet.fromEncryptedJsonSync(
   password
 );
 
-test('createClient', (t) => {
+test.serial('createClient', (t) => {
   t.true(typeof createClient === 'function');
   t.true(!!createClient());
   t.true(!!createClient({ baseURL: '' }));
 });
 
-test('getPosts', async (t) => {
+test.serial('getPosts', async (t) => {
   const { getPosts } = createClient({ baseURL: 'http://localhost:4000' });
   t.true(typeof getPosts === 'function');
   const posts = await getPosts({ slug: 'outpost' });
   t.true(Array.isArray(posts));
 });
 
-test('getSignInToken', async (t) => {
+test.serial('getSignInToken', async (t) => {
   const { address } = wallet;
   const { getSignInToken } = createClient({ baseURL: 'http://localhost:4000' });
   t.true(typeof getSignInToken === 'function');
@@ -52,7 +52,7 @@ test('getSignInToken', async (t) => {
   t.true(!!signInToken.length);
 });
 
-test('getAuthToken', async (t) => {
+test.serial('getAuthToken', async (t) => {
   const { address } = wallet;
   const { getSignInToken, getAuthToken } = createClient({
     baseURL: 'http://localhost:4000',
@@ -67,7 +67,7 @@ test('getAuthToken', async (t) => {
   t.true(!!authToken.length);
 });
 
-test('getPostPreview', async (t) => {
+test.serial('getPostPreview', async (t) => {
   const { getPosts, getPostPreview } = createClient({
     baseURL: 'http://localhost:4000',
   });
@@ -110,7 +110,7 @@ test('getPostPreview', async (t) => {
 });
 
 // TODO: This should be uploadUserImage.
-test('uploadImage', async (t) => {
+test.serial('uploadImage', async (t) => {
   const { address } = wallet;
   const { uploadImage } = createClient({
     baseURL: 'http://localhost:4000',
@@ -129,7 +129,7 @@ test('uploadImage', async (t) => {
   //const imageUrl = `https://arweave.net/${txId}`;
 });
 
-test('uploadPost', async (t) => {
+test.serial('uploadPost', async (t) => {
   const { address } = wallet;
   const { getSignInToken, getAuthToken, uploadPost } = createClient({
     baseURL: 'http://localhost:4000',
@@ -177,7 +177,7 @@ test('uploadPost', async (t) => {
   t.true(typeof name === 'string');
 });
 
-test('getAllCommunities', async (t) => {
+test.serial('getAllCommunities', async (t) => {
   const { getAllCommunities } = createClient({
     baseURL: 'http://localhost:4000',
   });
@@ -194,7 +194,7 @@ test('getAllCommunities', async (t) => {
   });
 });
 
-test('uploadComment', async (t) => {
+test.serial('uploadComment', async (t) => {
   const { uploadComment, getPosts } = createClient({
     baseURL: 'http://localhost:4000',
   });
@@ -217,4 +217,24 @@ test('uploadComment', async (t) => {
   t.true(typeof postText === 'string');
   t.true(typeof timestamp === 'number');
   t.true(typeof userAddress === 'string');
+});
+
+test.serial('getPost', async (t) => {
+  const { getPost, getPosts, getSignInToken, getAuthToken } = createClient({
+    baseURL: 'http://localhost:4000',
+  });
+  const { address } = wallet;
+  const signInToken = await getSignInToken({ address });
+  const signature = await wallet.signMessage(signInToken);
+  const authToken = await getAuthToken({
+    address,
+    signature,
+  });
+  const [post] = await getPosts({ slug: 'unit_tests' });
+  const { txId } = post;
+  const result = await getPost({
+    txId,
+    authToken,
+  });
+  t.true(!!result);
 });
