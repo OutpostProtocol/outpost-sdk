@@ -24,3 +24,6 @@ export type { uploadPostParams, uploadPostResult } from './uploadPost';
 
 export { default as getAllCommunities } from './getAllCommunities';
 export type { Community } from './getAllCommunities';
+
+export { default as uploadComment } from './uploadComment';
+export type { uploadCommentParams, uploadCommentResult } from './uploadComment';

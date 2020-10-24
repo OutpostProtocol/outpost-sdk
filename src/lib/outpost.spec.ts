@@ -67,7 +67,6 @@ test('getAuthToken', async (t) => {
   t.true(!!authToken.length);
 });
 
-// TODO: Unknown operation named "postpage".
 test('getPostPreview', async (t) => {
   const { getPosts, getPostPreview } = createClient({
     baseURL: 'http://localhost:4000',
@@ -141,7 +140,6 @@ test('uploadPost', async (t) => {
     address,
     signature,
   });
-  // TODO: Need a way to list communities
   const communityTxId = 'unit_tests:development';
   const timestamp = 1000;
   const result = await uploadPost({
@@ -194,4 +192,29 @@ test('getAllCommunities', async (t) => {
     t.true(typeof imageTxId === 'string');
     t.true(typeof slug === 'string');
   });
+});
+
+test('uploadComment', async (t) => {
+  const { uploadComment, getPosts } = createClient({
+    baseURL: 'http://localhost:4000',
+  });
+  const { address } = wallet;
+  const [post] = await getPosts({ slug: 'unit_tests' });
+  const { txId: postTxId } = post;
+
+  const {
+    postText,
+    timestamp,
+    user: { address: userAddress },
+  } = await uploadComment({
+    commentText: 'Hello, world! This is a comment.',
+    postTxId,
+    // TODO: This should be dynamic.
+    communityTxId: 'unit_tests',
+    address,
+    timestamp: 1000,
+  });
+  t.true(typeof postText === 'string');
+  t.true(typeof timestamp === 'number');
+  t.true(typeof userAddress === 'string');
 });

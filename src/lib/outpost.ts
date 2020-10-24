@@ -15,6 +15,9 @@ import {
   getSignInToken,
   getSignInTokenParams,
   getSignInTokenResult,
+  uploadComment,
+  uploadCommentParams,
+  uploadCommentResult,
   uploadImage,
   uploadImageParams,
   uploadImageResult,
@@ -44,6 +47,9 @@ export type createClientResult = {
     params: uploadImageParams
   ) => Promise<uploadImageResult>;
   readonly uploadPost: (params: uploadPostParams) => Promise<uploadPostResult>;
+  readonly uploadComment: (
+    params: uploadCommentParams
+  ) => Promise<uploadCommentResult>;
 };
 
 export const defaultOptions = Object.freeze({
@@ -66,5 +72,7 @@ export const createClient = (
       getPostPreview(client, params),
     uploadImage: (params: uploadImageParams) => uploadImage(client, params),
     uploadPost: (params: uploadPostParams) => uploadPost(client, params),
+    uploadComment: (params: uploadCommentParams) =>
+      uploadComment(client, params),
   };
 };
