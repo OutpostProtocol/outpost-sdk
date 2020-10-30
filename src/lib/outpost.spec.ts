@@ -122,9 +122,6 @@ test.serial('uploadImage', async (t) => {
   });
   t.true(!!txId);
   t.true(!!txId.length);
-  // TODO: Think we'd need a way to monitor the upload status.
-  // TODO: Return this to the caller.
-  //const imageUrl = `https://arweave.net/${txId}`;
 });
 
 test.serial('uploadPost', async (t) => {
@@ -147,7 +144,6 @@ test.serial('uploadPost', async (t) => {
       title: `Evil Automated Testing Post ${timestamp}`,
       subtitle: 'This is an automatic post. Nothing to see here!',
       postText: "<i>Hello, world.</i><script>alert('hi')</script>",
-      // TODO: What is this?
       canonicalLink: '',
       timestamp,
     },
