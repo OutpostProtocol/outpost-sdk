@@ -1,28 +1,21 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import * as yup from 'yup';
 
-import { ImageMimeTypes, splitBase64String } from '../constants';
-import { mutations } from '../graphql';
-
-const { uploadImage: query } = mutations;
+import { ImageMimeTypeRegex, splitBase64String } from '../constants';
 
 export type uploadImageParams = {
   readonly base64: string;
-  readonly address: string;
   readonly authToken: string;
 };
 
-export type uploadImageResult = { readonly txId: string };
+export type uploadImageResult = string;
 
 export type AxiosUploadImageResponse = {
-  readonly data: {
-    readonly uploadImage: uploadImageResult;
-  };
+  readonly txId: string;
 };
 
 const uploadImageSchema = yup.object().shape({
   base64: yup.string().required(),
-  address: yup.string().required(),
   authToken: yup.string().min(1).required(),
 });
 
@@ -31,32 +24,29 @@ export default async function uploadImage(
   params: uploadImageParams
 ): Promise<uploadImageResult> {
   await uploadImageSchema.validate(params);
-  const { base64, address, authToken } = params;
+  const { base64, authToken } = params;
   const maybeSplitBase64 = splitBase64String(base64);
   if (!maybeSplitBase64) {
     return Promise.reject(new Error('Malformed base64 string.'));
   }
-  const { data, mimeType } = maybeSplitBase64;
-  if (ImageMimeTypes.indexOf(mimeType) < 0) {
+  const { rawData, mimeType } = maybeSplitBase64;
+  if (!ImageMimeTypeRegex.test(mimeType)) {
     return Promise.reject(
       new Error(`${mimeType} is not a supported image upload type.`)
     );
   }
   const {
-    data: {
-      data: { uploadImage },
-    },
+    data: { txId },
   } = (await client({
     method: 'post',
-    url: '/graphql',
+    url: '/relay/image-upload',
     headers: {
       authorization: authToken,
     },
     data: {
-      operationName: 'uploadImage',
-      query,
-      variables: { image: { data, mimeType }, address },
+      rawData,
+      mimeType,
     },
   })) as AxiosResponse<AxiosUploadImageResponse>;
-  return uploadImage;
+  return txId;
 }
