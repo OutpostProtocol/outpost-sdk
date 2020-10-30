@@ -46,7 +46,7 @@ const uploadPostSchema = yup.object().shape({
     postText: yup.string().min(1).required(),
     canonicalLink: yup.string().min(0),
     timestamp: yup.number().min(0).required(),
-    parentTxId: yup.string().nullable(), // TODO: Where does this come from?
+    originalTxId: yup.string().nullable(),
   }),
   communityTxId: yup.string().required(),
 });
