@@ -9,6 +9,7 @@ const { uploadImage: query } = mutations;
 export type uploadImageParams = {
   readonly base64: string;
   readonly address: string;
+  readonly authToken: string;
 };
 
 export type uploadImageResult = { readonly txId: string };
@@ -22,6 +23,7 @@ export type AxiosUploadImageResponse = {
 const uploadImageSchema = yup.object().shape({
   base64: yup.string().required(),
   address: yup.string().required(),
+  authToken: yup.string().min(1).required(),
 });
 
 export default async function uploadImage(
@@ -29,7 +31,7 @@ export default async function uploadImage(
   params: uploadImageParams
 ): Promise<uploadImageResult> {
   await uploadImageSchema.validate(params);
-  const { base64, address } = params;
+  const { base64, address, authToken } = params;
   const maybeSplitBase64 = splitBase64String(base64);
   if (!maybeSplitBase64) {
     return Promise.reject(new Error('Malformed base64 string.'));
@@ -46,6 +48,10 @@ export default async function uploadImage(
     },
   } = (await client({
     method: 'post',
+    url: '/graphql',
+    headers: {
+      authorization: authToken,
+    },
     data: {
       operationName: 'uploadImage',
       query,

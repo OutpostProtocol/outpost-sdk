@@ -30,7 +30,6 @@ test('mutations', (t) => {
 
 const {
   getAllCommunities,
-  postPreview,
   getPosts,
   getPost,
   getPostPreview,
@@ -43,7 +42,6 @@ test('queries', (t) => {
   t.true(!!queries);
   t.true(typeof queries === 'object');
   t.true(typeof getAllCommunities === 'string');
-  t.true(typeof postPreview === 'string');
   t.true(typeof getPosts === 'string');
   t.true(typeof getPost === 'string');
   t.true(typeof getPostPreview === 'string');

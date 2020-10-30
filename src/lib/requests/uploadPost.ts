@@ -61,8 +61,9 @@ export default async function uploadPost(
     data: {
       data: { uploadPost },
     },
-  } = (await client({
+  } = (await client('graphql', {
     method: 'post',
+    url: '/graphql',
     headers: { authorization },
     data: {
       operationName: 'UploadPost',

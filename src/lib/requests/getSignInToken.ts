@@ -32,6 +32,7 @@ export default async function getSignInToken(
       data: { getSignInToken },
     },
   } = (await client({
+    url: '/graphql',
     method: 'post',
     data: {
       operationName: 'getToken',

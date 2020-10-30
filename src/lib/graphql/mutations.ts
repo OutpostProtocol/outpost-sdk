@@ -44,8 +44,8 @@ export const uploadImage = `
 `;
 
 export const uploadComment = `
-  mutation uploadComment($commentText: String!, $postTxId: String!, $communityTxId: String!, $ethAddr: String!, $timestamp: Int!) {
-    uploadComment(commentText: $commentText, postTxId: $postTxId, communityTxId: $communityTxId, ethAddr: $ethAddr, timestamp: $timestamp) {
+  mutation uploadComment($commentText: String!, $postTxId: String!, $communityTxId: String!, $timestamp: Int!) {
+    uploadComment(commentText: $commentText, postTxId: $postTxId, communityTxId: $communityTxId, timestamp: $timestamp) {
       postText
       timestamp
       user {
@@ -53,4 +53,16 @@ export const uploadComment = `
       }
     }
   }
+`;
+
+export const deletePost = `
+  mutation deletePost($txId: String!) {
+    deletePost(txId: $txId)
+  }
+`;
+
+export const updateReadRequirement = `
+    mutation updateReadRequirement($txId: String!, $readRequirement: Int!) {
+      updateReadRequirement(txId: $txId, readRequirement: $readRequirement)
+    }
 `;

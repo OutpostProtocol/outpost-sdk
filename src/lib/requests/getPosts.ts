@@ -47,6 +47,7 @@ export default async function getPosts(
       data: { posts },
     },
   } = (await client({
+    url: '/graphql',
     method: 'post',
     data: {
       operationName: 'posts',

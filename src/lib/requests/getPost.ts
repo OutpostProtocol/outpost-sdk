@@ -34,6 +34,7 @@ export default async function getPost(
       data: { getPost },
     },
   } = (await client({
+    url: '/graphql',
     method: 'post',
     headers: {
       authorization: authToken,
