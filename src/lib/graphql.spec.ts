@@ -3,21 +3,12 @@ import test from 'ava';
 
 import { mutations, queries } from './graphql';
 
-const {
-  uploadPost,
-  getSignInToken,
-  authAccount,
-  verifyToken,
-  uploadImage,
-  uploadComment,
-} = mutations;
+const { uploadPost, verifyToken, uploadImage, uploadComment } = mutations;
 
 test('mutations', (t) => {
   t.true(!!mutations);
   t.true(typeof mutations === 'object');
   t.true(typeof uploadPost === 'string');
-  t.true(typeof getSignInToken === 'string');
-  t.true(typeof authAccount === 'string');
   t.true(typeof verifyToken === 'string');
   t.true(typeof uploadImage === 'string');
   t.true(typeof uploadComment === 'string');

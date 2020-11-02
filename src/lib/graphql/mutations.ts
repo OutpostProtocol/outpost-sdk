@@ -17,18 +17,6 @@ export const uploadPost = `
   }
 `;
 
-export const getSignInToken = `
-  mutation getToken($addr: String!) {
-    getSignInToken(addr: $addr)
-  }
-`;
-
-export const authAccount = `
-  mutation auth($sig: String!, $addr: String!) {
-    authAccount(signature: $sig, addr: $addr)
-  }
-`;
-
 export const verifyToken = `
   mutation validate($token: String!) {
     verifyToken(token: $token)
