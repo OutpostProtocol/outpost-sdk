@@ -1,6 +1,6 @@
 {
   "name": "outpost-sdk",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "📨 🚀 The official JavaScript client SDK for the Outpost Protocol.",
   "main": "build/main/index.js",
   "browser": "build/main/index.js",
