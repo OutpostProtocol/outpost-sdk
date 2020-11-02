@@ -1,11 +1,8 @@
 export { default as getPosts } from './getPosts';
 export type { getPostsParams, getPostsResult } from './getPosts';
 
-export { default as getSignInToken } from './getSignInToken';
-export type {
-  getSignInTokenParams,
-  getSignInTokenResult,
-} from './getSignInToken';
+export { default as getChallenge } from './getChallenge';
+export type { getChallengeParams, getChallengeResult } from './getChallenge';
 
 export { default as getAuthToken } from './getAuthToken';
 export type { getAuthTokenParams, getAuthTokenResult } from './getAuthToken';

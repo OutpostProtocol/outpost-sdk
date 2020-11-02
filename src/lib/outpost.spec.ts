@@ -43,21 +43,21 @@ test.serial('getPosts', async (t) => {
   t.true(Array.isArray(posts));
 });
 
-test.serial('getSignInToken', async (t) => {
+test.serial('getChallenge', async (t) => {
   const { address } = wallet;
-  const { getSignInToken } = createClient({ baseURL: 'http://localhost:4000' });
-  t.true(typeof getSignInToken === 'function');
-  const signInToken = await getSignInToken({ address });
+  const { getChallenge } = createClient({ baseURL: 'http://localhost:4000' });
+  t.true(typeof getChallenge === 'function');
+  const signInToken = await getChallenge({ address });
   t.true(typeof signInToken === 'string');
   t.true(!!signInToken.length);
 });
 
 test.serial('getAuthToken', async (t) => {
   const { address } = wallet;
-  const { getSignInToken, getAuthToken } = createClient({
+  const { getChallenge, getAuthToken } = createClient({
     baseURL: 'http://localhost:4000',
   });
-  const signInToken = await getSignInToken({ address });
+  const signInToken = await getChallenge({ address });
   const signature = await wallet.signMessage(signInToken);
   const authToken = await getAuthToken({
     address,
@@ -102,11 +102,11 @@ test.serial('getPostPreview', async (t) => {
 // TODO: This should be uploadUserImage.
 test.serial('uploadImage', async (t) => {
   const { address } = wallet;
-  const { uploadImage, getSignInToken, getAuthToken } = createClient({
+  const { uploadImage, getChallenge, getAuthToken } = createClient({
     baseURL: 'http://localhost:4000',
   });
 
-  const signInToken = await getSignInToken({ address });
+  const signInToken = await getChallenge({ address });
   const signature = await wallet.signMessage(signInToken);
   const authToken = await getAuthToken({
     address,
@@ -127,10 +127,10 @@ test.serial('uploadImage', async (t) => {
 
 test.serial('uploadPost', async (t) => {
   const { address } = wallet;
-  const { getSignInToken, getAuthToken, uploadPost } = createClient({
+  const { getChallenge, getAuthToken, uploadPost } = createClient({
     baseURL: 'http://localhost:4000',
   });
-  const signInToken = await getSignInToken({ address });
+  const signInToken = await getChallenge({ address });
   const signature = await wallet.signMessage(signInToken);
   const authToken = await getAuthToken({
     address,
@@ -190,16 +190,11 @@ test.serial('getAllCommunities', async (t) => {
 });
 
 test.serial('uploadComment', async (t) => {
-  const {
-    uploadComment,
-    getPosts,
-    getSignInToken,
-    getAuthToken,
-  } = createClient({
+  const { uploadComment, getPosts, getChallenge, getAuthToken } = createClient({
     baseURL: 'http://localhost:4000',
   });
   const { address } = wallet;
-  const signInToken = await getSignInToken({ address });
+  const signInToken = await getChallenge({ address });
   const signature = await wallet.signMessage(signInToken);
   const authToken = await getAuthToken({
     address,
@@ -227,11 +222,11 @@ test.serial('uploadComment', async (t) => {
 });
 
 test.serial('getPost', async (t) => {
-  const { getPost, getPosts, getSignInToken, getAuthToken } = createClient({
+  const { getPost, getPosts, getChallenge, getAuthToken } = createClient({
     baseURL: 'http://localhost:4000',
   });
   const { address } = wallet;
-  const signInToken = await getSignInToken({ address });
+  const signInToken = await getChallenge({ address });
   const signature = await wallet.signMessage(signInToken);
   const authToken = await getAuthToken({
     address,
