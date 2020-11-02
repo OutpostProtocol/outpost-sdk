@@ -7,6 +7,9 @@ import {
   getAuthToken,
   getAuthTokenParams,
   getAuthTokenResult,
+  getChallenge,
+  getChallengeParams,
+  getChallengeResult,
   getPost,
   getPostParams,
   getPostPreview,
@@ -15,9 +18,6 @@ import {
   getPostResult,
   getPosts,
   getPostsParams,
-  getSignInToken,
-  getSignInTokenParams,
-  getSignInTokenResult,
   uploadComment,
   uploadCommentParams,
   uploadCommentResult,
@@ -37,9 +37,9 @@ export type createClientParams = {
 export type createClientResult = {
   readonly getAllCommunities: () => Promise<readonly Community[]>;
   readonly getPosts: (params: getPostsParams) => Promise<getPostsResult>;
-  readonly getSignInToken: (
-    params: getSignInTokenParams
-  ) => Promise<getSignInTokenResult>;
+  readonly getChallenge: (
+    params: getChallengeParams
+  ) => Promise<getChallengeResult>;
   readonly getAuthToken: (
     params: getAuthTokenParams
   ) => Promise<getAuthTokenResult>;
@@ -69,8 +69,7 @@ export const createClient = (
   return {
     getAllCommunities: () => getAllCommunities(client),
     getPosts: (params: getPostsParams) => getPosts(client, params),
-    getSignInToken: (params: getSignInTokenParams) =>
-      getSignInToken(client, params),
+    getChallenge: (params: getChallengeParams) => getChallenge(client, params),
     getAuthToken: (params: getAuthTokenParams) => getAuthToken(client, params),
     getPostPreview: (params: getPostPreviewParams) =>
       getPostPreview(client, params),

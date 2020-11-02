@@ -1,10 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import * as yup from 'yup';
 
-import { mutations } from '../graphql';
-
-const { authAccount: query } = mutations;
-
 export type getAuthTokenParams = {
   readonly address: string;
   readonly signature: string;
@@ -12,11 +8,7 @@ export type getAuthTokenParams = {
 
 export type getAuthTokenResult = string;
 
-export type AxiosAuthTokenResponse = {
-  readonly data: {
-    readonly authAccount: getAuthTokenResult;
-  };
-};
+export type AxiosAuthTokenResponse = string;
 
 const getAuthTokenSchema = yup.object().shape({
   address: yup.string().required(),
@@ -29,20 +21,13 @@ export default async function getAuthToken(
 ): Promise<getAuthTokenResult> {
   await getAuthTokenSchema.validate(params);
   const { address, signature } = params;
-  const {
-    data: {
-      data: { authAccount },
-    },
-  } = (await client({
+  const { data } = (await client({
+    url: '/relay/verify-challenge',
     method: 'post',
     data: {
-      operationName: 'auth',
-      query,
-      variables: {
-        addr: address,
-        sig: signature,
-      },
+      address,
+      signature,
     },
   })) as AxiosResponse<AxiosAuthTokenResponse>;
-  return authAccount;
+  return data;
 }

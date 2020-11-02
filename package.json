@@ -1,11 +1,12 @@
 {
   "name": "outpost-sdk",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "📨 🚀 The official JavaScript client SDK for the Outpost Protocol.",
   "main": "build/main/index.js",
+  "browser": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/YOUR_GITHUB_USER_NAME/outpost-sdk",
+  "repository": "https://github.com/OutpostProtocol/outpost-sdk",
   "license": "MIT",
   "keywords": [],
   "scripts": {
@@ -48,6 +49,8 @@
     "@types/react": "^16.9.53",
     "axios": "^0.20.0",
     "deepmerge": "^4.2.2",
+    "file-type": "^16.0.0",
+    "form-data": "^3.0.0",
     "yup": "^0.29.3"
   },
   "devDependencies": {

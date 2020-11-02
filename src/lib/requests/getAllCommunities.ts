@@ -21,6 +21,7 @@ export default async function getAllCommunities(
     },
   } = (await client({
     method: 'post',
+    url: '/graphql',
     data: {
       query,
       variables: {},

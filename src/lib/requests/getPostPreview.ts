@@ -7,7 +7,6 @@ const { getPostPreview: query } = queries;
 
 export type getPostPreviewParams = {
   readonly txId: string;
-  readonly slug: string;
 };
 
 export type getPostPreviewResult = {
@@ -28,7 +27,6 @@ export type AxiosGetPostPreviewResponse = {
 
 const getPostPreviewSchema = yup.object().shape({
   txId: yup.string().required(),
-  slug: yup.string().required(),
 });
 
 export default async function getPostPreview(
@@ -36,16 +34,17 @@ export default async function getPostPreview(
   params: getPostPreviewParams
 ): Promise<getPostPreviewResult> {
   await getPostPreviewSchema.validate(params);
-  const { txId, slug } = params;
+  const { txId } = params;
   const {
     data: {
       data: { postPreview },
     },
   } = (await client({
     method: 'post',
+    url: '/graphql',
     data: {
       query,
-      variables: { txId, slug },
+      variables: { txId },
     },
   })) as AxiosResponse<AxiosGetPostPreviewResponse>;
   return postPreview;
