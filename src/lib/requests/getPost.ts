@@ -20,7 +20,7 @@ type AxiosPostResultResponse = {
 
 const getPostSchema = yup.object().shape({
   txId: yup.string().min(1).required(),
-  authToken: yup.string().min(1).required(),
+  authToken: yup.string().nullable(),
 });
 
 export default async function getPost(
