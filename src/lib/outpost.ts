@@ -58,7 +58,7 @@ export type createClientResult = {
 
 export const defaultOptions = Object.freeze({
   // XXX: By default, we're on production.
-  baseURL: 'https://outpost-api-v2.herokuapp.com',
+  baseURL: 'https://api.outpost-protocol.com',
 }) as createClientParams;
 
 export const createClient = (
