@@ -132,7 +132,19 @@ type uploadImageParams = {
 };
 ```
 
-`type uploadImageResult = string;`
+```typescript
+type uploadImageResult = {
+  readonly txId: string;
+  readonly gateway: string;
+};
+```
+
+Now you can view the image at
+```typescript
+`https://${gateway}/${txId}`
+```
+
+Note: The `gateway` returned is the host of the gateway the image was uploaded to (i.e. 'arweave.net'). Transactions take about 2 minutes to be included in a block but Arweave's gateways ('arweave.net' and 'arweave.dev') optimistically store the transaction so it can be served immediately.
 
 #### `uploadPost`
 

@@ -8,10 +8,14 @@ export type uploadImageParams = {
   readonly authToken: string;
 };
 
-export type uploadImageResult = string;
+export type uploadImageResult = {
+  readonly txId: string;
+  readonly gateway: string;
+};
 
 export type AxiosUploadImageResponse = {
   readonly txId: string;
+  readonly gateway: string;
 };
 
 const uploadImageSchema = yup.object().shape({
@@ -36,7 +40,7 @@ export default async function uploadImage(
     );
   }
   const {
-    data: { txId },
+    data: { txId, gateway },
   } = (await client({
     method: 'post',
     url: '/relay/image-upload',
@@ -48,5 +52,8 @@ export default async function uploadImage(
       mimeType,
     },
   })) as AxiosResponse<AxiosUploadImageResponse>;
-  return txId;
+  return {
+    txId,
+    gateway,
+  };
 }
