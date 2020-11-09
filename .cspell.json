@@ -31,7 +31,8 @@
         "scrypt",
         "transpiled",
         "typedoc",
-        "untracked"
+        "untracked",
+        "arweave"
     ],
     "flagWords": [],
     "ignorePaths": [
